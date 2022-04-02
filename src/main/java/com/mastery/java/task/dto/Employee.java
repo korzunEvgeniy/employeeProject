@@ -2,38 +2,29 @@ package com.mastery.java.task.dto;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
-
 
 @Entity
 @Component
+//@Table(name = "employee")
 public class Employee {
 
-    private @Id
-    @GeneratedValue
-    Long employeeId;
-    //private Long employeeId;
+    @Id
+    @GeneratedValue()
+    private Long employeeId;
 
-//    @NotEmpty(message = "Name should not be empty")
-//    @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
     private String firstName;
-
-//    @NotEmpty(message = "Name should not be empty")
-//    @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
     private String lastName;
-
     private int departmentId;
-
-//    @NotEmpty(message = "job title should not be empty")
     private String jobTitle;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String dateOfBirth;
 
-    public Employee(long employeeId, String firstName, String lastName, int departmentId, String jobTitle,
+    public Employee(Long employeeId, String firstName, String lastName,
+                    int departmentId, String jobTitle,
                     Gender gender, String dateOfBirth) {
         this.employeeId = employeeId;
         this.firstName = firstName;
@@ -47,7 +38,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Long getEmployeeId(Long id) {
+    public Long getEmployeeId() {
         return employeeId;
     }
 

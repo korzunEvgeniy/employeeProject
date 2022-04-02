@@ -21,19 +21,24 @@ public class EmployeeService {
         return employeeDao.getAllEmployees();
     }
 
-//    public Employee getEmployeeById(Long id) {
-//        return employeeDao.getEmployeeById(id);
-//    }
-//
-//    public Employee createNewEmployee(Employee newEmployee) {
-//        return employeeDao.createNewEmployee(newEmployee);
-//    }
-//
-//    public Employee updateEmployee(Long id, Employee updatedEmployee) {
-//        return employeeDao.updateEmployee(id, updatedEmployee);
-//    }
-//
-//    public void deleteEmployeeById(Long id) {
-//        employeeDao.deleteEmployeeById(id);
-//    }
+    public Employee getEmployeeById(Long employeeId) {
+//        if(employeeId == null) {
+//            new EmployeeNotFoundException("This ID is not exist");
+//        } else
+//        employeeDao.getEmployeeById(employeeId).stream().findAny().orElse(() ->
+//                new EmployeeNotFoundException("This ID is not exist"));
+        return employeeDao.getEmployeeById(employeeId);
+    }
+
+    public Employee createNewEmployee(Employee newEmployee) {
+        return employeeDao.createNewEmployee(newEmployee);
+    }
+
+    public Employee updateEmployee(Long employeeId, Employee updatedEmployee) {
+        return employeeDao.updateEmployee(employeeId, updatedEmployee);
+    }
+
+    public void deleteEmployeeById(Long employeeId) {
+        employeeDao.deleteEmployeeById(employeeId);
+    }
 }

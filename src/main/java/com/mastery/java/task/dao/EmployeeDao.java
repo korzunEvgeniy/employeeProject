@@ -4,11 +4,11 @@ import com.mastery.java.task.dto.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component
+@Repository
 public class EmployeeDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -23,29 +23,32 @@ public class EmployeeDao {
                 new BeanPropertyRowMapper<>(Employee.class));
     }
 
-//    public Employee getEmployeeById(Long employeeId) {
-//        return jdbcTemplate.query("SELECT * FROM employee WHERE employeeId=?",
-//                new Object[]{employeeId}, new BeanPropertyRowMapper<>(Employee.class))
-//                .stream().findAny().orElse(null);
-//    }
-//
-//    public Employee createNewEmployee(Employee newEmployee) {
-//        jdbcTemplate.update("INSERT INTO employee VALUES(?, ?, ?, ?, ?, ?, ?)",
-//                newEmployee.getFirstName(), newEmployee.getLastName(), newEmployee.getDepartmentId(),
-//                newEmployee.getJobTitle(), newEmployee.getGender(), newEmployee.getDateOfBirth());
-//        return newEmployee;
-//    }
-//
-//    public Employee updateEmployee(Long employeeId, Employee updateEmployee) {
-//        jdbcTemplate.update("UPDATE employee SET firstName=?, lastName=?, departmentId=?, " +
-//                        "jobTitle=?, gender=?, dateOfBirth=?",
-//                updateEmployee.getFirstName(),
-//                updateEmployee.getLastName(), updateEmployee.getDepartmentId(), updateEmployee.getJobTitle(),
-//                updateEmployee.getGender(), updateEmployee.getDateOfBirth(), employeeId);
-//        return updateEmployee;
-//    }
-//
-//    public void deleteEmployeeById(Long employeeId) {
-//        jdbcTemplate.update("DELETE FROM employee WHERE employeeId=?", employeeId);
-//    }
+    public Employee getEmployeeById(Long employeeId) {
+        return jdbcTemplate.query("SELECT * FROM employee WHERE employee_id=?",
+                new BeanPropertyRowMapper<>(Employee.class), employeeId)
+                .stream().findAny().orElse(null);
+    }
+
+    public Employee createNewEmployee(Employee newEmployee) {
+        jdbcTemplate.update("INSERT INTO employee (first_name, last_name, job_title, gender, date_of_birth) VALUES(?, ?, ?, ?, ?)",
+                newEmployee.getFirstName(), newEmployee.getLastName(),
+                newEmployee.getJobTitle(), newEmployee.getGender().name(), newEmployee.getDateOfBirth());
+        return newEmployee;
+    }
+
+    public Employee updateEmployee(Long employeeId, Employee updateEmployee) {
+        jdbcTemplate.update("UPDATE employee SET first_name=?, last_name=?, " +
+                "job_title=?, gender=?, date_of_birth=? " +
+                "                WHERE employee_id=?",
+                updateEmployee.getFirstName(),
+                updateEmployee.getLastName(),
+                updateEmployee.getJobTitle(),
+                updateEmployee.getGender().name(),
+                updateEmployee.getDateOfBirth(), employeeId);
+        return updateEmployee;
+    }
+
+    public void deleteEmployeeById(Long employeeId) {
+        jdbcTemplate.update("DELETE FROM employee WHERE employee_id=?", employeeId);
+    }
 }

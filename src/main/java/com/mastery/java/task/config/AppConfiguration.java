@@ -1,11 +1,5 @@
 package com.mastery.java.task.config;
 
-
-
-import com.mastery.java.task.dao.EmployeeDao;
-import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.rest.EmployeeController;
-import com.mastery.java.task.service.EmployeeService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +11,6 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("com.mastery.java.task")
 public class AppConfiguration {
-
-    private Employee employee;
-    private EmployeeService employeeService;
-    private EmployeeController employeeController;
 
     @Bean
     public DataSource dataSource() {
@@ -38,9 +28,4 @@ public class AppConfiguration {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-
-//    @Bean
-//    public EmployeeService employeeService() {
-//        return new EmployeeService((EmployeeDao) dataSource());
-//    }
 }

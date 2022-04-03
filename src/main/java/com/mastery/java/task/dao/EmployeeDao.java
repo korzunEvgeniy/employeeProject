@@ -1,6 +1,7 @@
 package com.mastery.java.task.dao;
 
 import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,11 +27,12 @@ public class EmployeeDao {
     public Employee getEmployeeById(Long employeeId) {
         return jdbcTemplate.query("SELECT * FROM employee WHERE employee_id=?",
                 new BeanPropertyRowMapper<>(Employee.class), employeeId)
-                .stream().findAny().orElse(null);
+                .stream().findAny().orElseThrow();
     }
 
     public Employee createNewEmployee(Employee newEmployee) {
-        jdbcTemplate.update("INSERT INTO employee (first_name, last_name, job_title, gender, date_of_birth) VALUES(?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO employee (first_name, last_name, job_title, gender, date_of_birth) " +
+                        "VALUES(?, ?, ?, ?, ?)",
                 newEmployee.getFirstName(), newEmployee.getLastName(),
                 newEmployee.getJobTitle(), newEmployee.getGender().name(), newEmployee.getDateOfBirth());
         return newEmployee;

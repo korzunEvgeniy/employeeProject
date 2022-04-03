@@ -2,12 +2,13 @@ package com.mastery.java.task.service;
 
 import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class EmployeeService {
 
     private final EmployeeDao employeeDao;
@@ -21,12 +22,12 @@ public class EmployeeService {
         return employeeDao.getAllEmployees();
     }
 
-    public Employee getEmployeeById(Long employeeId) {
-//        if(employeeId == null) {
-//            new EmployeeNotFoundException("This ID is not exist");
-//        } else
-//        employeeDao.getEmployeeById(employeeId).stream().findAny().orElse(() ->
-//                new EmployeeNotFoundException("This ID is not exist"));
+    public Employee getEmployeeById(Long employeeId) throws EmployeeNotFoundException{
+            try {
+                employeeDao.getEmployeeById(employeeId);
+            } catch (Exception e) {
+                throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+            }
         return employeeDao.getEmployeeById(employeeId);
     }
 
@@ -34,11 +35,20 @@ public class EmployeeService {
         return employeeDao.createNewEmployee(newEmployee);
     }
 
-    public Employee updateEmployee(Long employeeId, Employee updatedEmployee) {
+    public Employee updateEmployee(Long employeeId, Employee updatedEmployee) throws EmployeeNotFoundException{
+        try {
+            employeeDao.updateEmployee(employeeId, updatedEmployee);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+        }
         return employeeDao.updateEmployee(employeeId, updatedEmployee);
     }
 
-    public void deleteEmployeeById(Long employeeId) {
-        employeeDao.deleteEmployeeById(employeeId);
+    public void deleteEmployeeById(Long employeeId) throws EmployeeNotFoundException{
+        try {
+            employeeDao.deleteEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+        }
     }
 }

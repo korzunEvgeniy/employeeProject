@@ -1,6 +1,8 @@
 package com.mastery.java.task.exception;
 
-public class EmployeeNotFoundException extends Exception{
+import java.util.function.Supplier;
+
+public class EmployeeNotFoundException extends Exception {
     public EmployeeNotFoundException(String message) {
         super(message);
     }

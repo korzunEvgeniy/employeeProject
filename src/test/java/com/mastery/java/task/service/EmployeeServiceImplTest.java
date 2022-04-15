@@ -23,15 +23,15 @@ class EmployeeServiceImplTest {
     private EmployeeServiceImpl employeeServiceImpl;
 
     List<Employee> listOfEmployees = new ArrayList<>();
-    Long employeeId = 1L;
-    Long employeeId2 = 2L;
-    Long employeeId3 = 3L;
-    Employee e1 = new Employee(employeeId, "Evgeniy", "Korzun",
+    Long id1 = 1L;
+    Long id2 = 2L;
+    Long id3 = 3L;
+    Employee e1 = new Employee(id1, "Evgeniy", "Korzun",
             220, "developer", Gender.MALE, "1987-06-24");
-    Employee e2 = new Employee(employeeId2, "Alex", "Safronov",
+    Employee e2 = new Employee(id2, "Alex", "Safronov",
             221, "developer", Gender.MALE, "1977-12-12");
-    Employee e3 = new Employee(employeeId3, "A", "B",
-            222, "dev", Gender.FEMALE, "1-2-3");
+    Employee e3 = new Employee(id3, "Anna", "Shine",
+            222, "engineer", Gender.FEMALE, "2002-5-3");
 
     @Mock
     private EmployeeDaoImpl employeeDaoImpl;
@@ -49,34 +49,33 @@ class EmployeeServiceImplTest {
         listOfEmployees.add(e3);
 
         when(employeeDaoImpl.getAllEmployees()).thenReturn(listOfEmployees);
-
         List<Employee> actualList = employeeServiceImpl.getAllEmployees();
+
         assertEquals(listOfEmployees, actualList);
         assertEquals(3, actualList.size());
         assertNotEquals(1, listOfEmployees.size());
-
         verify(employeeDaoImpl).getAllEmployees();
     }
 
     @Test
     public void getEmployeeById() throws EmployeeNotFoundException {
-        when(employeeDaoImpl.getEmployeeById(employeeId)).thenReturn(e1);
+        when(employeeDaoImpl.getEmployeeById(id1)).thenReturn(e1);
 
-        assertEquals(employeeServiceImpl.getEmployeeById(employeeId), e1);
-        assertNotEquals(employeeServiceImpl.getEmployeeById(employeeId2), e1);
-
-        verify(employeeDaoImpl).getEmployeeById(employeeId);
+        assertEquals(employeeServiceImpl.getEmployeeById(id1), e1);
+        assertNotEquals(employeeServiceImpl.getEmployeeById(id2), e1);
+        verify(employeeDaoImpl).getEmployeeById(id1);
     }
 
     @Test
     public void getEmployeeByIdExpectedException() throws EmployeeNotFoundException {
-        Long employeeId4 = 4L;
-        when(employeeDaoImpl.getEmployeeById(employeeId4)).thenThrow(EmployeeNotFoundException.class);
+        Long id4 = 4L;
+        when(employeeDaoImpl.getEmployeeById(id4)).thenThrow(EmployeeNotFoundException.class);
 
         Throwable exception;
         exception = assertThrows(EmployeeNotFoundException.class,
-                () -> employeeServiceImpl.getEmployeeById(employeeId4));
-        assertEquals("Employee with id " + employeeId4 + " is not exist", exception.getMessage());
+                () -> employeeServiceImpl.getEmployeeById(id4));
+        assertEquals("Employee with id " + id4 + " is not exist", exception.getMessage());
+        verify(employeeDaoImpl).getEmployeeById(id4);
     }
 
     @Test
@@ -89,40 +88,43 @@ class EmployeeServiceImplTest {
 
     @Test
     void updateEmployee() throws EmployeeNotFoundException {
-        when(employeeDaoImpl.updateEmployee(employeeId2, e3)).thenReturn(e3);
+        when(employeeDaoImpl.updateEmployee(id2, e3)).thenReturn(e3);
 
-        assertEquals(employeeServiceImpl.updateEmployee(employeeId2, e3), e3);
-        verify(employeeDaoImpl).updateEmployee(employeeId2, e3);
-
+        assertEquals(employeeServiceImpl.updateEmployee(id2, e3), e3);
+        verify(employeeDaoImpl).updateEmployee(id2, e3);
     }
 
     @Test
     public void updateEmployeeExpectedException() throws EmployeeNotFoundException{
-        Long employeeId5 = 5L;
-
-        when(employeeDaoImpl.updateEmployee(employeeId5, e3)).thenThrow(EmployeeNotFoundException.class);
+        Long id5 = 5L;
+        when(employeeDaoImpl.updateEmployee(id5, e3)).thenThrow(EmployeeNotFoundException.class);
 
         Throwable exception;
         exception = assertThrows(EmployeeNotFoundException.class,
-                () -> employeeServiceImpl.updateEmployee(employeeId5, e3));
-
-        assertEquals("Employee with id " + employeeId5 + " is not exist", exception.getMessage());
+                () -> employeeServiceImpl.updateEmployee(id5, e3));
+        assertEquals("Employee with id " + id5 + " is not exist", exception.getMessage());
+        verify(employeeDaoImpl).updateEmployee(id5, e3);
     }
 
     @Test
     public void deleteEmployeeById() throws EmployeeNotFoundException {
         doNothing().
-                when(employeeDaoImpl).deleteEmployeeById(employeeId3);
-        employeeServiceImpl.deleteEmployeeById(employeeId3);
-        verify(employeeDaoImpl).deleteEmployeeById(employeeId3);
+                when(employeeDaoImpl).deleteEmployeeById(id3);
+        employeeServiceImpl.deleteEmployeeById(id3);
+        verify(employeeDaoImpl).deleteEmployeeById(id3);
     }
 
     @Test
     public void deleteEmployeeExpectedException() throws EmployeeNotFoundException {
-        long employeeId6 = 6L;
+        long id6 = 6L;
+        doNothing().doThrow(EmployeeNotFoundException.class).
+                when(employeeDaoImpl).deleteEmployeeById(id6);
+        employeeServiceImpl.deleteEmployeeById(id6);
 
-        doNothing().doThrow(EmployeeNotFoundException.class).when(employeeDaoImpl).deleteEmployeeById(employeeId6);
-        employeeServiceImpl.deleteEmployeeById(employeeId6);
-        verify(employeeDaoImpl).deleteEmployeeById(employeeId6);
+        Throwable exception;
+        exception = assertThrows(EmployeeNotFoundException.class,
+                () -> employeeServiceImpl.deleteEmployeeById(id6));
+        assertEquals("Employee with id " + id6 + " is not exist", exception.getMessage());
+        verify(employeeDaoImpl, times(2)).deleteEmployeeById(id6);
    }
 }

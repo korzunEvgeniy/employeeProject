@@ -1,6 +1,7 @@
 package com.mastery.java.task.dao;
 
 import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,7 +43,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public Employee updateEmployee(Long employeeId, Employee updateEmployee) {
-        jdbcTemplate.update("UPDATE employee SET first_name=?, last_name=?, " +
+        int numOfRowsAffected = jdbcTemplate.update("UPDATE employee SET first_name=?, last_name=?, " +
                 "job_title=?, gender=?, date_of_birth=? " +
                 "                WHERE employee_id=?",
                 updateEmployee.getFirstName(),
@@ -50,11 +51,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 updateEmployee.getJobTitle(),
                 updateEmployee.getGender().name(),
                 updateEmployee.getDateOfBirth(), employeeId);
-        return updateEmployee;
+        if(numOfRowsAffected != 0) {
+            return updateEmployee;
+        } else {
+            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+        }
     }
 
     @Override
     public void deleteEmployeeById(Long employeeId) {
-        jdbcTemplate.update("DELETE FROM employee WHERE employee_id=?", employeeId);
+        int numOfRowsAffected = jdbcTemplate.update("DELETE FROM employee " +
+                "WHERE employee_id=?", employeeId);
+        if(numOfRowsAffected == 0) {
+            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+        }
     }
 }

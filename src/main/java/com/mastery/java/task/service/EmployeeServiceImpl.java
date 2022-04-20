@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             return employeeDaoImpl.getEmployeeById(employeeId);
         } catch (Exception e) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+            throw new EmployeeNotFoundException(employeeId);
         }
     }
 
@@ -43,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             return employeeDaoImpl.updateEmployee(employeeId, updatedEmployee);
         } catch (Exception e) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+            throw new EmployeeNotFoundException(employeeId);
         }
     }
 
@@ -52,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             employeeDaoImpl.deleteEmployeeById(employeeId);
         } catch (Exception e) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+            throw new EmployeeNotFoundException(employeeId);
         }
     }
 }

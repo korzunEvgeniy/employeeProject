@@ -74,7 +74,7 @@ class EmployeeServiceImplTest {
         Throwable exception;
         exception = assertThrows(EmployeeNotFoundException.class,
                 () -> employeeServiceImpl.getEmployeeById(id4));
-        assertEquals("Employee with id " + id4 + " is not exist", exception.getMessage());
+        assertEquals("Employee with id " + id4 + " not found!", exception.getMessage());
         verify(employeeDaoImpl).getEmployeeById(id4);
     }
 
@@ -102,7 +102,7 @@ class EmployeeServiceImplTest {
         Throwable exception;
         exception = assertThrows(EmployeeNotFoundException.class,
                 () -> employeeServiceImpl.updateEmployee(id5, e3));
-        assertEquals("Employee with id " + id5 + " is not exist", exception.getMessage());
+        assertEquals("Employee with id " + id5 + " not found!", exception.getMessage());
         verify(employeeDaoImpl).updateEmployee(id5, e3);
     }
 
@@ -124,7 +124,7 @@ class EmployeeServiceImplTest {
         Throwable exception;
         exception = assertThrows(EmployeeNotFoundException.class,
                 () -> employeeServiceImpl.deleteEmployeeById(id6));
-        assertEquals("Employee with id " + id6 + " is not exist", exception.getMessage());
+        assertEquals("Employee with id " + id6 + " not found!", exception.getMessage());
         verify(employeeDaoImpl, times(2)).deleteEmployeeById(id6);
    }
 }

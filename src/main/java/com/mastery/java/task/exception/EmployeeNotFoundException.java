@@ -1,7 +1,7 @@
 package com.mastery.java.task.exception;
 
 public class EmployeeNotFoundException extends RuntimeException {
-    public EmployeeNotFoundException(String message) {
-        super(message);
+    public EmployeeNotFoundException(Long id) {
+        super("Employee with id " + id + " not found!");
     }
 }

@@ -54,7 +54,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         if(numOfRowsAffected != 0) {
             return updateEmployee;
         } else {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+            throw new EmployeeNotFoundException(employeeId);
         }
     }
 
@@ -63,7 +63,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         int numOfRowsAffected = jdbcTemplate.update("DELETE FROM employee " +
                 "WHERE employee_id=?", employeeId);
         if(numOfRowsAffected == 0) {
-            throw new EmployeeNotFoundException("Employee with id " + employeeId + " is not exist");
+            throw new EmployeeNotFoundException(employeeId);
         }
     }
 }

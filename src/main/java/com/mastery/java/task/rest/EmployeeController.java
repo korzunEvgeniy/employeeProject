@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     private final EmployeeServiceImpl employeeServiceImpl;
@@ -21,12 +21,12 @@ public class EmployeeController {
         this.employeeServiceImpl = service;
     }
 
-    @GetMapping("getAll")
+    @GetMapping
     public List<Employee> getAllEmployees() {
         return employeeServiceImpl.getAllEmployees();
     }
 
-    @GetMapping("getOne/{employeeId}")
+    @GetMapping("/{employeeId}")
     public Employee getEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException {
         try {
             return employeeServiceImpl.getEmployeeById(employeeId);
@@ -35,13 +35,13 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping("createEmployee")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@RequestBody Employee newEmployee) {
         return employeeServiceImpl.createNewEmployee(newEmployee);
     }
 
-    @PutMapping("update/{employeeId}")
+    @PutMapping("/{employeeId}")
     public Employee updateEmployee(@PathVariable Long employeeId,
     @RequestBody Employee updateEmployee) throws EmployeeNotFoundException{
         try {
@@ -51,7 +51,7 @@ public class EmployeeController {
         }
     }
 
-    @DeleteMapping("delete/{employeeId}")
+    @DeleteMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException{
         try {

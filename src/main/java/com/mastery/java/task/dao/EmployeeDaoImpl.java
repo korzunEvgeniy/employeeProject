@@ -42,7 +42,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Employee updateEmployee(Long employeeId, Employee updateEmployee) {
+    public Employee updateEmployee(Employee updateEmployee) {
         int numOfRowsAffected = jdbcTemplate.update("UPDATE employee SET first_name=?, last_name=?, " +
                 "job_title=?, gender=?, date_of_birth=? " +
                 "                WHERE employee_id=?",
@@ -50,11 +50,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 updateEmployee.getLastName(),
                 updateEmployee.getJobTitle(),
                 updateEmployee.getGender().name(),
-                updateEmployee.getDateOfBirth(), employeeId);
+                updateEmployee.getDateOfBirth(), updateEmployee.getEmployeeId());
         if(numOfRowsAffected != 0) {
             return updateEmployee;
         } else {
-            throw new EmployeeNotFoundException(employeeId);
+            throw new EmployeeNotFoundException(updateEmployee.getEmployeeId());
         }
     }
 

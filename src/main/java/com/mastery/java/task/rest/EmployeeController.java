@@ -41,11 +41,10 @@ public class EmployeeController {
         return employeeServiceImpl.createNewEmployee(newEmployee);
     }
 
-    @PutMapping("/{employeeId}")
-    public Employee updateEmployee(@PathVariable Long employeeId,
-    @RequestBody Employee updateEmployee) throws EmployeeNotFoundException{
+    @PutMapping
+    public Employee updateEmployee(@RequestBody Employee updateEmployee) throws EmployeeNotFoundException{
         try {
-            return employeeServiceImpl.updateEmployee(employeeId, updateEmployee);
+            return employeeServiceImpl.updateEmployee(updateEmployee);
         } catch(EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

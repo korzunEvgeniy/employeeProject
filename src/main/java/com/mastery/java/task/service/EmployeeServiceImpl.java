@@ -38,12 +38,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Long employeeId, Employee updatedEmployee)
+    public Employee updateEmployee(Employee updatedEmployee)
             throws EmployeeNotFoundException {
         try {
-            return employeeDaoImpl.updateEmployee(employeeId, updatedEmployee);
+            return employeeDaoImpl.updateEmployee(updatedEmployee);
         } catch (Exception e) {
-            throw new EmployeeNotFoundException(employeeId);
+            throw new EmployeeNotFoundException(updatedEmployee.getEmployeeId());
         }
     }
 

@@ -88,22 +88,30 @@ class EmployeeServiceImplTest {
 
     @Test
     void updateEmployee() throws EmployeeNotFoundException {
-        when(employeeDaoImpl.updateEmployee(id2, e3)).thenReturn(e3);
+        Employee updatedE3 = new Employee(e3.getEmployeeId(), e3.getFirstName(), e3.getLastName(),
+                e3.getDepartmentId(), "architect", e3.getGender(), e3.getDateOfBirth());
+        when(employeeDaoImpl.updateEmployee(updatedE3)).thenReturn(updatedE3);
 
-        assertEquals(employeeServiceImpl.updateEmployee(id2, e3), e3);
-        verify(employeeDaoImpl).updateEmployee(id2, e3);
+        Employee updatedE3Actual = employeeServiceImpl.updateEmployee(updatedE3);
+
+        assertEquals(updatedE3Actual, updatedE3);
+        assertNotEquals(updatedE3Actual.getJobTitle(), e3.getJobTitle());
+        verify(employeeDaoImpl).updateEmployee(updatedE3);
     }
 
     @Test
     public void updateEmployeeExpectedException() throws EmployeeNotFoundException{
-        Long id5 = 5L;
-        when(employeeDaoImpl.updateEmployee(id5, e3)).thenThrow(EmployeeNotFoundException.class);
+        Long notExistingId = 5L;
+        Employee updatedE3WithNotExistingId = new Employee(notExistingId, e3.getFirstName(), e3.getLastName(),
+                e3.getDepartmentId(), "architect", e3.getGender(), e3.getDateOfBirth());
+        when(employeeDaoImpl.updateEmployee(updatedE3WithNotExistingId)).thenThrow(EmployeeNotFoundException.class);
 
         Throwable exception;
         exception = assertThrows(EmployeeNotFoundException.class,
-                () -> employeeServiceImpl.updateEmployee(id5, e3));
-        assertEquals("Employee with id " + id5 + " not found!", exception.getMessage());
-        verify(employeeDaoImpl).updateEmployee(id5, e3);
+                () -> employeeServiceImpl.updateEmployee(updatedE3WithNotExistingId));
+        assertEquals("Employee with id " + updatedE3WithNotExistingId.getEmployeeId() + " not found!",
+                exception.getMessage());
+        verify(employeeDaoImpl).updateEmployee(updatedE3WithNotExistingId);
     }
 
     @Test

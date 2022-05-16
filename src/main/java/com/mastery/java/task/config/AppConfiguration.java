@@ -1,26 +1,33 @@
 package com.mastery.java.task.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 
 @Configuration
 @ComponentScan("com.mastery.java.task")
 public class AppConfiguration {
+    private final Environment env;
+
+    @Autowired
+    public AppConfiguration(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/employeedb");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("Evgeniy");
-
+        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("spring.datasource.driver-class-name")));
+        dataSource.setUrl(env.getProperty("spring.datasource.url"));
+        dataSource.setUsername(env.getProperty("spring.datasource.username"));
+        dataSource.setPassword(env.getProperty("spring.datasource.password"));
         return dataSource;
     }
 

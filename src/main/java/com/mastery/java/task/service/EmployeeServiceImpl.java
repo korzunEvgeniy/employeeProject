@@ -1,6 +1,6 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.dao.EmployeeDaoImpl;
+import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeDaoImpl employeeDaoImpl;
+    private final EmployeeDao employeeDaoImpl;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeDaoImpl employeeDaoImpl) {
+    public EmployeeServiceImpl(EmployeeDao employeeDaoImpl) {
         this.employeeDaoImpl = employeeDaoImpl;
     }
 

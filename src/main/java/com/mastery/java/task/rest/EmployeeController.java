@@ -2,7 +2,7 @@ package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
-import com.mastery.java.task.service.EmployeeServiceImpl;
+import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeServiceImpl employeeServiceImpl;
+    private final EmployeeService employeeServiceImpl;
 
     @Autowired
-    public EmployeeController(EmployeeServiceImpl service) {
+    public EmployeeController(EmployeeService service) {
         this.employeeServiceImpl = service;
     }
 

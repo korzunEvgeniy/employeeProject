@@ -1,31 +1,44 @@
-package com.mastery.java.task.dto;
-
-import org.springframework.stereotype.Component;
-
+package com.mastery.java.task.dao.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Component
+@Table(name = "employees")
 public class Employee {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")
     private Long employeeId;
 
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "department_id")
     private int departmentId;
+
+    @Column(name = "job_title")
     private String jobTitle;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "gender_id")
+    private Employee.Gender gender;
+
+    @Column(name = "date_of_birth")
     private String dateOfBirth;
 
+    public enum Gender {
+        MALE,
+        FEMALE
+    }
+
     public Employee(Long employeeId, String firstName, String lastName,
-                    int departmentId, String jobTitle,
-                    Gender gender, String dateOfBirth) {
+                       int departmentId, String jobTitle,
+                       Employee.Gender gender, String dateOfBirth) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,7 +71,7 @@ public class Employee {
         return jobTitle;
     }
 
-    public Gender getGender() {
+    public Employee.Gender getGender() {
         return gender;
     }
 
@@ -86,7 +99,7 @@ public class Employee {
         this.jobTitle = jobTitle;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(Employee.Gender gender) {
         this.gender = gender;
     }
 
@@ -112,8 +125,8 @@ public class Employee {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.employeeId, this.firstName, this.lastName, this.departmentId,
-                this.jobTitle, this.gender, this.dateOfBirth);
+        return Objects.hash(this.employeeId, this.firstName, this.lastName,
+                this.departmentId, this.jobTitle, this.gender, this.dateOfBirth);
     }
 
     @Override

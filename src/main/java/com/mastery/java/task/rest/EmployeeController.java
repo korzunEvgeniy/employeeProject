@@ -1,6 +1,6 @@
 package com.mastery.java.task.rest;
 
-import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.service.dto.EmployeeDto;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeServiceImpl.getAllEmployees();
+    public List<EmployeeDto> getAllEmployees() {
+        return employeeServiceImpl.getAll();
     }
 
     @GetMapping("/{employeeId}")
-    public Employee getEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException {
+    public EmployeeDto getEmployeeById(@PathVariable Long employeeId) {
         try {
-            return employeeServiceImpl.getEmployeeById(employeeId);
+            return employeeServiceImpl.get(employeeId);
         } catch (EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -37,14 +37,14 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createNewEmployee(@RequestBody Employee newEmployee) {
-        return employeeServiceImpl.createNewEmployee(newEmployee);
+    public EmployeeDto createNewEmployee(@RequestBody EmployeeDto newEmployeeDto) {
+        return employeeServiceImpl.create(newEmployeeDto);
     }
 
     @PutMapping
-    public Employee updateEmployee(@RequestBody Employee updateEmployee) throws EmployeeNotFoundException{
+    public EmployeeDto updateEmployee(@RequestBody EmployeeDto updateEmployeeDto) {
         try {
-            return employeeServiceImpl.updateEmployee(updateEmployee);
+            return employeeServiceImpl.update(updateEmployeeDto);
         } catch(EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -52,9 +52,9 @@ public class EmployeeController {
 
     @DeleteMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException{
+    public void deleteEmployeeById(@PathVariable Long employeeId) {
         try {
-            employeeServiceImpl.deleteEmployeeById(employeeId);
+            employeeServiceImpl.delete(employeeId);
         } catch(EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

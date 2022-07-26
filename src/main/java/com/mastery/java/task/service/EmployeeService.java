@@ -1,18 +1,23 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exception.EmployeeNotFoundException;
+import com.mastery.java.task.service.dto.EmployeeDto;
+
 import java.util.List;
 
-public interface EmployeeService {
+public interface EmployeeService extends Service<EmployeeDto, Long> {
 
-    List<Employee> getAllEmployees();
+    @Override
+    EmployeeDto get(Long key);
 
-    Employee getEmployeeById(Long employeeId) throws EmployeeNotFoundException;
+    @Override
+    List<EmployeeDto> getAll();
 
-    Employee createNewEmployee(Employee newEmployee);
+    @Override
+    EmployeeDto create(EmployeeDto dto);
 
-    Employee updateEmployee(Employee updatedEmployee) throws EmployeeNotFoundException;
+    @Override
+    EmployeeDto update(EmployeeDto dto);
 
-    void deleteEmployeeById(Long employeeId) throws EmployeeNotFoundException;
+    @Override
+    void delete(Long key);
 }

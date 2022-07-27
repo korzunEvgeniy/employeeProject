@@ -2,7 +2,9 @@ package com.mastery.java.task.service;
 
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.service.dto.EmployeeDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmployeeMapper {
     public EmployeeDto toDto(Employee employee) {
         EmployeeDto employeeDto = new EmployeeDto();

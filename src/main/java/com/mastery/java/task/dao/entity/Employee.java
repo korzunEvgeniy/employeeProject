@@ -1,5 +1,6 @@
 package com.mastery.java.task.dao.entity;
 
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -25,11 +26,14 @@ public class Employee {
     private String jobTitle;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "gender_id")
+    @Column(name = "gender")
     private Employee.Gender gender;
 
     @Column(name = "date_of_birth")
     private String dateOfBirth;
+
+    @Column(name = "deleted")
+    private boolean deleted;
 
     public enum Gender {
         MALE,
@@ -79,6 +83,8 @@ public class Employee {
         return dateOfBirth;
     }
 
+    public boolean isDeleted() { return deleted; }
+
     public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
@@ -105,6 +111,10 @@ public class Employee {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

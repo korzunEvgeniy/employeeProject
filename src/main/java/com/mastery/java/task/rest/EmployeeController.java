@@ -4,6 +4,7 @@ import com.mastery.java.task.service.dto.EmployeeDto;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,8 +23,8 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDto> getAllEmployees() {
-        return employeeServiceImpl.getAll();
+    public List<EmployeeDto> getAllEmployees(Pageable pageable) {
+        return employeeServiceImpl.getAll(pageable);
     }
 
     @GetMapping("/{employeeId}")

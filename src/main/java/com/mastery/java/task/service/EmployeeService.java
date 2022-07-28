@@ -1,27 +1,17 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.service.dto.EmployeeDto;
-import org.springframework.data.domain.Pageable;
-
+import com.mastery.java.task.dao.entity.Employee;
 import java.util.List;
 
-public interface EmployeeService extends Service<EmployeeDto, Long> {
+public interface EmployeeService {
 
-    @Override
-    EmployeeDto get(Long key);
+    Employee get(Long key);
 
-    @Override
-    List<EmployeeDto> getAll(Pageable pageable);
+    List<Employee> getAll();
 
-    @Override
-    EmployeeDto create(EmployeeDto dto);
+    Employee create(Employee employee);
 
-    @Override
-    EmployeeDto update(EmployeeDto dto);
+    Employee update(Employee employee);
 
-    @Override
     void delete(Long key);
-
-    @Override
-    Long countAll();
 }

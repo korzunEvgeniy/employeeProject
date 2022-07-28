@@ -1,5 +1,4 @@
--- TRUNCATE employees CASCADE;
--- TRUNCATE gender CASCADE;
+-- TRUNCATE employees;
 
 INSERT INTO employees (first_name, last_name, job_title, department_id, gender, date_of_birth)
 VALUES

@@ -10,6 +10,5 @@ CREATE TABLE IF NOT EXISTS employees (
         department_id BIGINT NOT NULL,
         job_title VARCHAR(20) NOT NULL,
         gender BIGINT NOT NULL,
-        date_of_birth VARCHAR(20) NOT NULL,
-        deleted BOOLEAN DEFAULT false NOT NULL
+        date_of_birth VARCHAR(20) NOT NULL
 );

@@ -11,7 +11,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
-    private Long employeeId;
+    private Long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -32,18 +32,15 @@ public class Employee {
     @Column(name = "date_of_birth")
     private String dateOfBirth;
 
-    @Column(name = "deleted")
-    private boolean deleted;
-
     public enum Gender {
         MALE,
         FEMALE
     }
 
-    public Employee(Long employeeId, String firstName, String lastName,
-                       int departmentId, String jobTitle,
-                       Employee.Gender gender, String dateOfBirth) {
-        this.employeeId = employeeId;
+    public Employee(Long id, String firstName, String lastName,
+                    int departmentId, String jobTitle,
+                    Employee.Gender gender, String dateOfBirth) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.departmentId = departmentId;
@@ -55,8 +52,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Long getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -83,10 +80,8 @@ public class Employee {
         return dateOfBirth;
     }
 
-    public boolean isDeleted() { return deleted; }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setId(Long employeeId) {
+        this.id = employeeId;
     }
 
     public void setFirstName(String firstName) {
@@ -113,18 +108,13 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Employee))
+        if (!(o instanceof Employee employee))
             return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(this.employeeId, employee.employeeId) &&
+        return Objects.equals(this.id, employee.id) &&
                 Objects.equals(this.firstName, employee.firstName) &&
                 Objects.equals(this.lastName, employee.lastName) &&
                 Objects.equals(this.departmentId, employee.departmentId) &&
@@ -135,14 +125,14 @@ public class Employee {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.employeeId, this.firstName, this.lastName,
+        return Objects.hash(this.id, this.firstName, this.lastName,
                 this.departmentId, this.jobTitle, this.gender, this.dateOfBirth);
     }
 
     @Override
     public String toString() {
         return "Employee{" +
-                "employeeId=" + employeeId +
+                "employeeId=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", departmentId=" + departmentId +

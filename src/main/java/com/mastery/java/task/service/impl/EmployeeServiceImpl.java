@@ -4,17 +4,16 @@ import com.mastery.java.task.dao.EmployeeRepository;
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private static final Logger logger = LogManager.getLogger(EmployeeServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
     private final EmployeeRepository employeeRepository;
 
     @Autowired
@@ -24,32 +23,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAll() {
-        logger.debug("Start method getAll");
+        logger.info("Start method getAll");
         return employeeRepository.findAll();
     }
 
     @Override
     public Employee get(Long id) {
-        logger.debug("Start method getById");
+        logger.info("Start method getById");
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override
     public Employee create(Employee newEmployee) {
-        logger.debug("Start method createEmployee");
+        logger.info("Start method createEmployee");
         return employeeRepository.save(newEmployee);
     }
 
     @Override
     public Employee update(Employee updatedEmployee) {
-        logger.debug("Start method updateEmployee");
+        logger.info("Start method updateEmployee");
         return employeeRepository.save(updatedEmployee);
     }
 
     @Override
     public void delete(Long id) {
-        logger.debug("Start method deleteEmployee");
+        logger.info("Start method deleteEmployee");
         if (employeeRepository.findById(id).isPresent()) {
             employeeRepository.deleteById(id);
         } else {

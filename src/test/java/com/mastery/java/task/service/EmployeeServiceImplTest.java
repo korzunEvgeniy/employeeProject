@@ -23,16 +23,16 @@ class EmployeeServiceImplTest {
 
     private EmployeeServiceImpl employeeServiceImpl;
 
-    List<Employee> listOfEmployee = new ArrayList<>();
     Long id1 = 1L;
     Long id2 = 2L;
     Long id3 = 3L;
+    Long notExistingId = 4L;
     Employee e1 = new Employee(id1, "Evgeniy", "Korzun",
-            220, "developer", Employee.Gender.MALE, "1987-06-24");
+            1, "developer", Employee.Gender.MALE, "1987-06-24");
     Employee e2 = new Employee(id2, "Alex", "Safronov",
-            221, "developer", Employee.Gender.MALE, "1977-12-12");
+            1, "developer", Employee.Gender.MALE, "1977-12-12");
     Employee e3 = new Employee(id3, "Anna", "Shine",
-            222, "engineer", Employee.Gender.FEMALE, "2002-5-3");
+            1, "engineer", Employee.Gender.FEMALE, "2002-5-3");
 
     @Mock
     private EmployeeRepository employeeRepository;
@@ -45,6 +45,7 @@ class EmployeeServiceImplTest {
 
     @Test
     public void getAllEmployees() {
+        List<Employee> listOfEmployee = new ArrayList<>();
         listOfEmployee.add(e1);
         listOfEmployee.add(e2);
         listOfEmployee.add(e3);
@@ -68,11 +69,10 @@ class EmployeeServiceImplTest {
 
     @Test
     public void getEmployeeByIdExpectedException() {
-        Long id4 = 4L;
-        when(employeeRepository.findById(id4)).thenThrow(EmployeeNotFoundException.class);
+        when(employeeRepository.findById(notExistingId)).thenThrow(EmployeeNotFoundException.class);
 
-        Throwable exception = new EmployeeNotFoundException(id4);
-        assertEquals("Employee with id " + id4 + " not found!", exception.getMessage());
+        Throwable exception = new EmployeeNotFoundException(notExistingId);
+        assertEquals("Employee with id " + notExistingId + " not found!", exception.getMessage());
     }
 
     @Test
@@ -84,7 +84,7 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    void updateEmployee() throws EmployeeNotFoundException {
+    void updateEmployee() {
         Employee updatedE3 = new Employee(e3.getId(), e3.getFirstName(), e3.getLastName(),
                 e3.getDepartmentId(), "architect", e3.getGender(), e3.getDateOfBirth());
         when(employeeRepository.save(updatedE3)).thenReturn(updatedE3);
@@ -98,7 +98,6 @@ class EmployeeServiceImplTest {
 
     @Test
     public void updateEmployeeExpectedException() {
-        Long notExistingId = 5L;
         Employee updatedE3WithNotExistingId = new Employee(notExistingId, e3.getFirstName(), e3.getLastName(),
                 e3.getDepartmentId(), "architect", e3.getGender(), e3.getDateOfBirth());
         when(employeeRepository.save(updatedE3WithNotExistingId)).thenThrow(EmployeeNotFoundException.class);
@@ -109,24 +108,19 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    public void deleteEmployeeById() throws EmployeeNotFoundException {
+    public void deleteEmployeeById() {
         doNothing().
-                when(employeeRepository).delete(e3);
-        employeeServiceImpl.delete(id3);
+                when(employeeRepository).deleteById(e3.getId());
+        employeeRepository.deleteById(e3.getId());
         verify(employeeRepository).deleteById(e3.getId());
     }
 
     @Test
     public void deleteEmployeeExpectedException() {
-        long id6 = 6L;
-        Employee e6 = new Employee();
-        e6.setId(id6);
         doNothing().doThrow(EmployeeNotFoundException.class).
-                when(employeeRepository).delete(e6);
+                when(employeeRepository).delete(e3);
 
-        employeeServiceImpl.delete(id6);
-
-        Throwable exception = new EmployeeNotFoundException(id6);
-        assertEquals("Employee with id " + id6 + " not found!", exception.getMessage());
+        Throwable exception = new EmployeeNotFoundException(id3);
+        assertEquals("Employee with id " + id3 + " not found!", exception.getMessage());
     }
 }

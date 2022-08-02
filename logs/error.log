@@ -1,0 +1,4 @@
+2022-08-02 14:31:50 [http-nio-8082-exec-3] ERROR c.m.j.t.e.ControllerExceptionHandler - Start method employeeNotFoundException
+2022-08-02 14:34:56 [http-nio-8082-exec-8] ERROR c.m.j.t.e.ControllerExceptionHandler - Start method employeeNotFoundException
+2022-08-02 14:38:41 [http-nio-8082-exec-2] ERROR c.m.j.t.e.ControllerExceptionHandler - Start method employeeNotFoundException in class class com.mastery.java.task.exception.ControllerExceptionHandler
+2022-08-02 14:48:28 [http-nio-8082-exec-2] ERROR c.m.j.t.e.ControllerExceptionHandler - Start method employeeNotFoundException

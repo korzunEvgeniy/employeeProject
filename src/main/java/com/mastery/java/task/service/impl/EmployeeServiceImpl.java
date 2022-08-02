@@ -4,10 +4,11 @@ import com.mastery.java.task.dao.EmployeeRepository;
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee get(Long id) {
-        logger.info("Start method getById");
+        logger.info("Start method getById {}", id);
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
@@ -42,13 +43,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee update(Employee updatedEmployee) {
-        logger.info("Start method updateEmployee");
+        logger.info("Start method updateEmployee {}", updatedEmployee.getId());
         return employeeRepository.save(updatedEmployee);
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("Start method deleteEmployee");
+        logger.info("Start method deleteEmployee {}", id);
         if (employeeRepository.findById(id).isPresent()) {
             employeeRepository.deleteById(id);
         } else {

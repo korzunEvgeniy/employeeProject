@@ -1,6 +1,6 @@
 package com.mastery.java.task.rest;
 
-import com.mastery.java.task.service.dto.EmployeeDto;
+import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDto> getAllEmployees() {
+    public List<Employee> getAllEmployees() {
         return employeeServiceImpl.getAll();
     }
 
-    @GetMapping("/{employeeId}")
-    public EmployeeDto getEmployeeById(@PathVariable Long employeeId) {
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable Long id) {
         try {
-            return employeeServiceImpl.get(employeeId);
+            return employeeServiceImpl.get(id);
         } catch (EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -37,25 +37,25 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeDto createNewEmployee(@RequestBody EmployeeDto newEmployeeDto) {
-        return employeeServiceImpl.create(newEmployeeDto);
+    public Employee createNewEmployee(@RequestBody Employee newEmployee) {
+        return employeeServiceImpl.create(newEmployee);
     }
 
     @PutMapping
-    public EmployeeDto updateEmployee(@RequestBody EmployeeDto updateEmployeeDto) {
+    public Employee updateEmployee(@RequestBody Employee updateEmployee) {
         try {
-            return employeeServiceImpl.update(updateEmployeeDto);
-        } catch(EmployeeNotFoundException e) {
+            return employeeServiceImpl.update(updateEmployee);
+        } catch (EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
-    @DeleteMapping("/{employeeId}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployeeById(@PathVariable Long employeeId) {
+    public void deleteEmployeeById(@PathVariable Long id) {
         try {
-            employeeServiceImpl.delete(employeeId);
-        } catch(EmployeeNotFoundException e) {
+            employeeServiceImpl.delete(id);
+        } catch (EmployeeNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

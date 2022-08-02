@@ -3,77 +3,57 @@ package com.mastery.java.task.service.impl;
 import com.mastery.java.task.dao.EmployeeRepository;
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
-import com.mastery.java.task.service.EmployeeMapper;
 import com.mastery.java.task.service.EmployeeService;
-import com.mastery.java.task.service.dto.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepositoryImpl;
     private static final Logger logger = LogManager.getLogger(EmployeeServiceImpl.class);
-    private static final EmployeeMapper MAPPER = new EmployeeMapper();
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepositoryImpl) {
-        this.employeeRepositoryImpl = employeeRepositoryImpl;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public List<EmployeeDto> getAll() {
+    public List<Employee> getAll() {
         logger.debug("Start method getAll");
-        Iterable<Employee> employees = employeeRepositoryImpl.getAll();
-        List<EmployeeDto> employeeDtos = new ArrayList<>();
-        for (Employee employee : employees) {
-            EmployeeDto employeeDto = MAPPER.toDto(employee);
-            employeeDtos.add(employeeDto);
-        }
-        return employeeDtos;
+        return employeeRepository.findAll();
     }
 
     @Override
-    public EmployeeDto get(Long employeeId) {
+    public Employee get(Long id) {
         logger.debug("Start method getById");
-        try {
-            return MAPPER.toDto(employeeRepositoryImpl.get(employeeId));
-        } catch (Exception e) {
-            throw new EmployeeNotFoundException(employeeId);
-        }
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override
-    public EmployeeDto create(EmployeeDto newEmployeeDto) {
-        logger.debug("Start method createBook");
-//        Employee existing = employeeRepositoryImpl.get(newEmployeeDto.getEmployeeId());
-//        if (existing != null) {
-//            throw new RuntimeException("Employee with id " + newEmployeeDto.getEmployeeId() + " exist");
-//        } else
-            return MAPPER.toDto(employeeRepositoryImpl.create(MAPPER.toEntity(newEmployeeDto)));
+    public Employee create(Employee newEmployee) {
+        logger.debug("Start method createEmployee");
+        return employeeRepository.save(newEmployee);
     }
 
     @Override
-    public EmployeeDto update(EmployeeDto updatedEmployeeDto) {
+    public Employee update(Employee updatedEmployee) {
         logger.debug("Start method updateEmployee");
-        try {
-            return MAPPER.toDto(employeeRepositoryImpl.update(MAPPER.toEntity(updatedEmployeeDto)));
-        } catch (Exception e) {
-            throw new EmployeeNotFoundException(updatedEmployeeDto.getEmployeeId());
-        }
+        return employeeRepository.save(updatedEmployee);
     }
 
     @Override
-    public void delete(Long employeeId) {
-        try {
-            employeeRepositoryImpl.delete(employeeId);
-        } catch (Exception e) {
-            throw new EmployeeNotFoundException(employeeId);
+    public void delete(Long id) {
+        logger.debug("Start method deleteEmployee");
+        if (employeeRepository.findById(id).isPresent()) {
+            employeeRepository.deleteById(id);
+        } else {
+            throw new EmployeeNotFoundException(id);
         }
     }
 }

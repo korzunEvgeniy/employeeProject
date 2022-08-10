@@ -19,7 +19,6 @@ public class ControllerExceptionHandler {
     public ErrorMessage employeeNotFoundException(EmployeeNotFoundException ex, WebRequest request) {
         logger.error("Start method employeeNotFoundException");
         return new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
@@ -30,7 +29,6 @@ public class ControllerExceptionHandler {
     public ErrorMessage globalExceptionHandler(Exception ex, WebRequest request) {
         logger.error("Start method globalExceptionHandler");
         return new ErrorMessage(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));

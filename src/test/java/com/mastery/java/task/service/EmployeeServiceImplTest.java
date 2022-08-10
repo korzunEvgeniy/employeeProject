@@ -23,16 +23,8 @@ class EmployeeServiceImplTest {
 
     private EmployeeServiceImpl employeeServiceImpl;
 
-    Long id1 = 1L;
-    Long id2 = 2L;
-    Long id3 = 3L;
-    Long notExistingId = 4L;
-    Employee e1 = new Employee(id1, "Evgeniy", "Korzun",
-            1, "developer", Employee.Gender.MALE, "1987-06-24");
-    Employee e2 = new Employee(id2, "Alex", "Safronov",
-            1, "developer", Employee.Gender.MALE, "1977-12-12");
-    Employee e3 = new Employee(id3, "Anna", "Shine",
-            1, "engineer", Employee.Gender.FEMALE, "2002-5-3");
+    private Long id1, id2, id3, notExistingId;
+    private Employee e1, e2, e3;
 
     @Mock
     private EmployeeRepository employeeRepository;
@@ -41,6 +33,20 @@ class EmployeeServiceImplTest {
     public void setupMock() {
         MockitoAnnotations.openMocks(this);
         employeeServiceImpl = new EmployeeServiceImpl(employeeRepository);
+    }
+
+    @BeforeEach
+    public void init() {
+        id1 = 1L;
+        id2 = 2L;
+        id3 = 3L;
+        notExistingId = 4L;
+        e1 = new Employee(id1, "Evgeniy", "Korzun",
+                1, "developer", Employee.Gender.MALE, "1987-06-24");
+        e2 = new Employee(id2, "Alex", "Safronov",
+                1, "developer", Employee.Gender.MALE, "1977-12-12");
+        e3 = new Employee(id3, "Anna", "Shine",
+                1, "engineer", Employee.Gender.FEMALE, "2002-5-3");
     }
 
     @Test

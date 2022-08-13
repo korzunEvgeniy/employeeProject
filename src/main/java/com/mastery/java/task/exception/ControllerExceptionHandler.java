@@ -17,7 +17,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(EmployeeNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorMessage employeeNotFoundException(EmployeeNotFoundException ex, WebRequest request) {
-        logger.error("Start method employeeNotFoundException");
+        logger.error(ex.toString());
         return new ErrorMessage(
                 new Date(),
                 ex.getMessage(),
@@ -27,7 +27,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage globalExceptionHandler(Exception ex, WebRequest request) {
-        logger.error("Start method globalExceptionHandler");
+        logger.error(ex.toString());
         return new ErrorMessage(
                 new Date(),
                 ex.getMessage(),

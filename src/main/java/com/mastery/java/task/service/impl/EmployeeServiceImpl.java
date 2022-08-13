@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -24,32 +25,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAll() {
-        logger.info("Start method getAll");
+        logger.info("Getting all employees");
         return employeeRepository.findAll();
     }
 
     @Override
     public Employee get(Long id) {
-        logger.info("Start method getById {}", id);
+        logger.info("Getting employee with id {}", id);
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override
     public Employee create(Employee newEmployee) {
-        logger.info("Start method createEmployee");
+        logger.info("Creating new employee");
         return employeeRepository.save(newEmployee);
     }
 
     @Override
     public Employee update(Employee updatedEmployee) {
-        logger.info("Start method updateEmployee {}", updatedEmployee.getId());
-        return employeeRepository.save(updatedEmployee);
+        logger.info("Updating employee with id {}", updatedEmployee.getId());
+        Employee expected = get(updatedEmployee.getId());
+        if (!Objects.equals(updatedEmployee.getId(), expected.getId())) {
+            throw new EmployeeNotFoundException(updatedEmployee.getId());
+        } else {
+            logger.info("Updated employee with id {}", updatedEmployee.getId());
+            return employeeRepository.save(updatedEmployee);
+        }
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("Start method deleteEmployee {}", id);
+        logger.info("Deleting employee with id {}", id);
         employeeRepository.deleteById(id);
     }
 }

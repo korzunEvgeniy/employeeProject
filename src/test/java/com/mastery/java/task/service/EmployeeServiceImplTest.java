@@ -94,6 +94,7 @@ class EmployeeServiceImplTest {
         Employee updatedE3 = new Employee(e3.getId(), e3.getFirstName(), e3.getLastName(),
                 e3.getDepartmentId(), "architect", e3.getGender(), e3.getDateOfBirth());
         when(employeeRepository.save(updatedE3)).thenReturn(updatedE3);
+        when(employeeRepository.findById(updatedE3.getId())).thenReturn(Optional.ofNullable(e3));
 
         Employee updatedE3Actual = employeeServiceImpl.update(updatedE3);
 

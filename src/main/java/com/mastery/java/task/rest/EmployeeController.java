@@ -24,33 +24,33 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getAllEmployees() {
-        logger.info("Start method getAllEmployees");
+        logger.info("Getting all employees");
         return employeeServiceImpl.getAll();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
-        logger.info("Start method getAllEmployees {}", id);
+        logger.info("Getting employee with id {}", id);
         return employeeServiceImpl.get(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@RequestBody Employee newEmployee) {
-        logger.info("Start method createNewEmployee");
+        logger.info("Creating new employee");
         return employeeServiceImpl.create(newEmployee);
     }
 
     @PutMapping
     public Employee updateEmployee(@RequestBody Employee updateEmployee) {
-        logger.info("Start method updateEmployee {}", updateEmployee.getId());
+        logger.info("Updating employee with id {}", updateEmployee.getId());
         return employeeServiceImpl.update(updateEmployee);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long id) {
-        logger.info("Start method deleteEmployeeById {}", id);
+        logger.info("Deleting employee with id {}", id);
         employeeServiceImpl.delete(id);
     }
 }

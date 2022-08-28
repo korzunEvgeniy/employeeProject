@@ -25,38 +25,37 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAll() {
-        logger.info("Getting all employees");
+        logger.info("Getting all employees from DB");
         return employeeRepository.findAll();
     }
 
     @Override
     public Employee get(Long id) {
-        logger.info("Getting employee with id {}", id);
+        logger.info("Getting employee with id {} from DB", id);
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override
     public Employee create(Employee newEmployee) {
-        logger.info("Creating new employee");
+        logger.info("Creating new employee in DB");
         return employeeRepository.save(newEmployee);
     }
 
     @Override
     public Employee update(Employee updatedEmployee) {
-        logger.info("Updating employee with id {}", updatedEmployee.getId());
+        logger.info("Updating employee with id {} in DB", updatedEmployee.getId());
         Employee expected = get(updatedEmployee.getId());
         if (!Objects.equals(updatedEmployee.getId(), expected.getId())) {
             throw new EmployeeNotFoundException(updatedEmployee.getId());
         } else {
-            logger.info("Updated employee with id {}", updatedEmployee.getId());
             return employeeRepository.save(updatedEmployee);
         }
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("Deleting employee with id {}", id);
+        logger.info("Deleting employee with id {} from DB", id);
         employeeRepository.deleteById(id);
     }
 }

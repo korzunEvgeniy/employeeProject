@@ -24,33 +24,33 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getAllEmployees() {
-        logger.info("Getting all employees");
+        logger.info("Get-request to receive all employees");
         return employeeServiceImpl.getAll();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
-        logger.info("Getting employee with id {}", id);
+        logger.info("Get-request to receive employee with id {}", id);
         return employeeServiceImpl.get(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@RequestBody Employee newEmployee) {
-        logger.info("Creating new employee");
+        logger.info("Post-request to creating new entity: " + newEmployee);
         return employeeServiceImpl.create(newEmployee);
     }
 
     @PutMapping
     public Employee updateEmployee(@RequestBody Employee updateEmployee) {
-        logger.info("Updating employee with id {}", updateEmployee.getId());
+        logger.info("Put-request to updating {}", updateEmployee);
         return employeeServiceImpl.update(updateEmployee);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long id) {
-        logger.info("Deleting employee with id {}", id);
+        logger.info("Delete-request to deleting employee with id {}", id);
         employeeServiceImpl.delete(id);
     }
 }

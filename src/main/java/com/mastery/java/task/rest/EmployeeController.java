@@ -2,6 +2,10 @@ package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.service.EmployeeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@Api(tags = "Controller for Employees")
 public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
@@ -22,18 +27,38 @@ public class EmployeeController {
         this.employeeServiceImpl = service;
     }
 
+    @ApiOperation(value = "Get all employees", notes = "Returns list of employees from DB")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved"),
+            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
+            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
+            @ApiResponse(code = 404, message = "Not found - employees are not found")
+    })
     @GetMapping
     public List<Employee> getAllEmployees() {
         logger.info("Getting all employees");
         return employeeServiceImpl.getAll();
     }
 
+    @ApiOperation(value = "Get employee by id", notes = "Returns employee as per id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved"),
+            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
+            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
+            @ApiResponse(code = 404, message = "Not found - employee is not found")
+    })
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
         logger.info("Getting employee with id {}", id);
         return employeeServiceImpl.get(id);
     }
 
+    @ApiOperation(value = "Create new employee", notes = "Save new employee in DB")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successfully created"),
+            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
+            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@RequestBody Employee newEmployee) {
@@ -41,12 +66,25 @@ public class EmployeeController {
         return employeeServiceImpl.create(newEmployee);
     }
 
+    @ApiOperation(value = "Update employee by id", notes = "Updating existed employee as per id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully updated"),
+            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
+            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
+            @ApiResponse(code = 404, message = "Not found - employee is not found")
+    })
     @PutMapping
     public Employee updateEmployee(@RequestBody Employee updateEmployee) {
         logger.info("Updating employee with id {}", updateEmployee.getId());
         return employeeServiceImpl.update(updateEmployee);
     }
 
+    @ApiOperation(value = "Delete employee by id", notes = "Delete record from DB")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Successfully deleted"),
+            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
+            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
+    })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long id) {

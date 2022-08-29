@@ -3,12 +3,14 @@ package com.mastery.java.task.service.impl;
 import com.mastery.java.task.dao.EmployeeRepository;
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.exception.EmployeeNotFoundException;
+import com.mastery.java.task.exception.EmployeeNotValidException;
 import com.mastery.java.task.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +41,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee create(Employee newEmployee) {
         logger.info("Creating new employee");
+        if (checkValidAge(newEmployee)) {
+            throw new EmployeeNotValidException(newEmployee.getLastName());
+        }
         return employeeRepository.save(newEmployee);
     }
 
@@ -48,8 +53,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee expected = get(updatedEmployee.getId());
         if (!Objects.equals(updatedEmployee.getId(), expected.getId())) {
             throw new EmployeeNotFoundException(updatedEmployee.getId());
+        } else if (checkValidAge(updatedEmployee)) {
+            throw new EmployeeNotValidException(updatedEmployee.getLastName());
         } else {
-            logger.info("Updated employee with id {}", updatedEmployee.getId());
             return employeeRepository.save(updatedEmployee);
         }
     }
@@ -58,5 +64,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delete(Long id) {
         logger.info("Deleting employee with id {}", id);
         employeeRepository.deleteById(id);
+    }
+
+    public boolean checkValidAge(Employee employee) {
+        LocalDate minDateOfBirth = LocalDate.now().minusYears(18);
+        return minDateOfBirth.compareTo(LocalDate.parse(employee.getDateOfBirth())) <= 0;
     }
 }

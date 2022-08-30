@@ -4,6 +4,9 @@ package com.mastery.java.task.dao.entity;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -18,18 +21,24 @@ public class Employee {
 
     @Column(name = "first_name")
     @ApiModelProperty(notes = "First name", example = "Ivan", required = true)
+    @Size(min = 2, max = 20, message = "Name could be between 2 and 20 characters")
     private String firstName;
 
     @Column(name = "last_name")
     @ApiModelProperty(notes = "Second name", example = "Ivanov", required = true)
+    @NotBlank(message = "Second name cannot be empty")
+    @Size(min = 2, max = 20)
     private String lastName;
 
     @Column(name = "department_id")
     @ApiModelProperty(notes = "ID of department", example = "3", required = true)
+    @NotNull(message = "Department cannot be null")
     private int departmentId;
 
     @Column(name = "job_title")
     @ApiModelProperty(notes = "Type of profession", example = "Engineer", required = true)
+    @NotBlank(message = "Professional cannot be empty")
+    @Size(min = 2, max = 20)
     private String jobTitle;
 
     @Enumerated(EnumType.ORDINAL)
@@ -39,6 +48,8 @@ public class Employee {
 
     @Column(name = "date_of_birth")
     @ApiModelProperty(notes = "Date of birth", example = "yyyy-mm-dd", required = true)
+    @NotBlank(message = "Date of birth cannot be empty")
+    @Size(min = 2, max = 20, message = "Should use pattern: yyyy-mm-dd")
     private String dateOfBirth;
 
     public enum Gender {

@@ -46,7 +46,7 @@ class EmployeeServiceImplTest {
         e2 = new Employee(id2, "Alex", "Safronov",
                 1, "developer", Employee.Gender.MALE, "1977-12-12");
         e3 = new Employee(id3, "Anna", "Shine",
-                1, "engineer", Employee.Gender.FEMALE, "2002-5-3");
+                1, "engineer", Employee.Gender.FEMALE, "2002-05-03");
     }
 
     @Test

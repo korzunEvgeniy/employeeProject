@@ -37,7 +37,7 @@ public class EmployeeController {
     })
     @GetMapping
     public List<Employee> getAllEmployees() {
-        logger.info("Getting all employees");
+        logger.info("Get-request to receive all employees");
         return employeeServiceImpl.getAll();
     }
 
@@ -50,7 +50,7 @@ public class EmployeeController {
     })
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
-        logger.info("Getting employee with id {}", id);
+        logger.info("Get-request to receive employee with id {}", id);
         return employeeServiceImpl.get(id);
     }
 
@@ -63,7 +63,7 @@ public class EmployeeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@Valid @RequestBody Employee newEmployee) {
-        logger.info("Creating new employee");
+        logger.info("Post-request to creating new entity: " + newEmployee);
         return employeeServiceImpl.create(newEmployee);
     }
 
@@ -75,8 +75,8 @@ public class EmployeeController {
             @ApiResponse(code = 404, message = "Not found - employee is not found")
     })
     @PutMapping
-    public Employee updateEmployee(@RequestBody Employee updateEmployee) {
-        logger.info("Updating employee with id {}", updateEmployee.getId());
+    public Employee updateEmployee(@Valid @RequestBody Employee updateEmployee) {
+        logger.info("Put-request to updating {}", updateEmployee);
         return employeeServiceImpl.update(updateEmployee);
     }
 
@@ -89,7 +89,7 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long id) {
-        logger.info("Deleting employee with id {}", id);
+        logger.info("Delete-request to deleting employee with id {}", id);
         employeeServiceImpl.delete(id);
     }
 }

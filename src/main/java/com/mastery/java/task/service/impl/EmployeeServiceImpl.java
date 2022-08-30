@@ -27,20 +27,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAll() {
-        logger.info("Getting all employees");
+        logger.trace("Getting all employees from DB");
         return employeeRepository.findAll();
     }
 
     @Override
     public Employee get(Long id) {
-        logger.info("Getting employee with id {}", id);
+        logger.trace("Getting employee with id {} from DB", id);
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override
     public Employee create(Employee newEmployee) {
-        logger.info("Creating new employee");
+        logger.trace("Creating new employee in DB");
         if (checkValidAge(newEmployee)) {
             throw new EmployeeNotValidException(newEmployee.getLastName());
         }
@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee update(Employee updatedEmployee) {
-        logger.info("Updating employee with id {}", updatedEmployee.getId());
+        logger.trace("Updating employee with id {} in DB", updatedEmployee.getId());
         Employee expected = get(updatedEmployee.getId());
         if (!Objects.equals(updatedEmployee.getId(), expected.getId())) {
             throw new EmployeeNotFoundException(updatedEmployee.getId());
@@ -62,11 +62,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void delete(Long id) {
-        logger.info("Deleting employee with id {}", id);
+        logger.trace("Deleting employee with id {} from DB", id);
         employeeRepository.deleteById(id);
     }
 
     public boolean checkValidAge(Employee employee) {
+        logger.info("Checking input data for validity");
         LocalDate minDateOfBirth = LocalDate.now().minusYears(18);
         return minDateOfBirth.compareTo(LocalDate.parse(employee.getDateOfBirth())) <= 0;
     }

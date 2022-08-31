@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,11 @@ class EmployeeServiceImplTest {
         id3 = 3L;
         notExistingId = 4L;
         e1 = new Employee(id1, "Evgeniy", "Korzun",
-                1, "developer", Employee.Gender.MALE, "1987-06-24");
+                1, "developer", Employee.Gender.MALE, LocalDate.of(1987, 06, 24));
         e2 = new Employee(id2, "Alex", "Safronov",
-                1, "developer", Employee.Gender.MALE, "1977-12-12");
+                1, "developer", Employee.Gender.MALE, LocalDate.of(1977, 12, 12));
         e3 = new Employee(id3, "Anna", "Shine",
-                1, "engineer", Employee.Gender.FEMALE, "2002-05-03");
+                1, "engineer", Employee.Gender.FEMALE, LocalDate.of(2002, 05, 03));
     }
 
     @Test

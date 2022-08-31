@@ -1,12 +1,14 @@
 package com.mastery.java.task.dao.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -48,9 +50,8 @@ public class Employee {
 
     @Column(name = "date_of_birth")
     @ApiModelProperty(notes = "Date of birth", example = "yyyy-mm-dd", required = true)
-    @NotBlank(message = "Date of birth cannot be empty")
-    @Size(min = 2, max = 20, message = "Should use pattern: yyyy-mm-dd")
-    private String dateOfBirth;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
 
     public enum Gender {
         MALE,
@@ -59,7 +60,7 @@ public class Employee {
 
     public Employee(Long id, String firstName, String lastName,
                     int departmentId, String jobTitle,
-                    Employee.Gender gender, String dateOfBirth) {
+                    Employee.Gender gender, LocalDate dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -96,7 +97,7 @@ public class Employee {
         return gender;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -124,7 +125,7 @@ public class Employee {
         this.gender = gender;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

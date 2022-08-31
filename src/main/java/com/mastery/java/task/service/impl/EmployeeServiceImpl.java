@@ -66,9 +66,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public boolean checkValidAge(Employee employee) {
-        logger.info("Checking input data for validity");
+    private boolean checkValidAge(Employee employee) {
+        logger.info("Checking input data for :" + employee.getLastName() + " " + employee.getFirstName() + " with date of birth " + employee.getDateOfBirth());
         LocalDate minDateOfBirth = LocalDate.now().minusYears(18);
-        return minDateOfBirth.compareTo(LocalDate.parse(employee.getDateOfBirth())) <= 0;
+        return minDateOfBirth.compareTo(employee.getDateOfBirth()) <= 0;
     }
 }

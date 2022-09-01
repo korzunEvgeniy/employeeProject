@@ -42,8 +42,8 @@ class EmployeeServiceImplTest {
         id2 = 2L;
         id3 = 3L;
         notExistingId = 4L;
-        e1 = new Employee(id1, "Evgeniy", "Korzun",
-                1, "developer", Employee.Gender.MALE, LocalDate.of(1987, 06, 24));
+        e1 = new Employee(id1, "Evgeniy", "Krid",
+                1, "developer", Employee.Gender.MALE, LocalDate.of(1989, 05, 14));
         e2 = new Employee(id2, "Alex", "Safronov",
                 1, "developer", Employee.Gender.MALE, LocalDate.of(1977, 12, 12));
         e3 = new Employee(id3, "Anna", "Shine",

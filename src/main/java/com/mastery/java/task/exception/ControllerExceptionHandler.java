@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage globalExceptionHandler(Exception ex, WebRequest request) {
         logger.error(ex.toString());
         return new ErrorMessage(

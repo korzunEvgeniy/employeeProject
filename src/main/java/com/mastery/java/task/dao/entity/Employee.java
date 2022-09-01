@@ -2,6 +2,7 @@ package com.mastery.java.task.dao.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mastery.java.task.service.validator.UnderValidAge;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -51,6 +52,7 @@ public class Employee {
     @Column(name = "date_of_birth")
     @ApiModelProperty(notes = "Date of birth", example = "yyyy-mm-dd", required = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @UnderValidAge
     private LocalDate dateOfBirth;
 
     public enum Gender {

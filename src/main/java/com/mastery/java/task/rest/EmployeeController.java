@@ -31,8 +31,6 @@ public class EmployeeController {
     @ApiOperation(value = "Get all employees", notes = "Returns list of employees from DB")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
-            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
             @ApiResponse(code = 404, message = "Not found - employees are not found")
     })
     @GetMapping
@@ -44,8 +42,6 @@ public class EmployeeController {
     @ApiOperation(value = "Get employee by id", notes = "Returns employee as per id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
-            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
             @ApiResponse(code = 404, message = "Not found - employee is not found")
     })
     @GetMapping("/{id}")
@@ -55,11 +51,7 @@ public class EmployeeController {
     }
 
     @ApiOperation(value = "Create new employee", notes = "Save new employee in DB")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created"),
-            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
-            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
-    })
+    @ApiResponses(value = @ApiResponse(code = 201, message = "Successfully created"))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@Valid @RequestBody Employee newEmployee) {
@@ -70,8 +62,6 @@ public class EmployeeController {
     @ApiOperation(value = "Update employee by id", notes = "Updating existed employee as per id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated"),
-            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
-            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
             @ApiResponse(code = 404, message = "Not found - employee is not found")
     })
     @PutMapping
@@ -81,11 +71,7 @@ public class EmployeeController {
     }
 
     @ApiOperation(value = "Delete employee by id", notes = "Delete record from DB")
-    @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Successfully deleted"),
-            @ApiResponse(code = 401, message = "Unauthorized - you need to log in"),
-            @ApiResponse(code = 403, message = "Forbidden - access rights are missing"),
-    })
+    @ApiResponses(value = @ApiResponse(code = 204, message = "Successfully deleted"))
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long id) {

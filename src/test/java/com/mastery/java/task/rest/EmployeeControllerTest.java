@@ -46,11 +46,11 @@ public class EmployeeControllerTest {
     @BeforeEach
     public void init() {
         employeeValid = new Employee(1L, "Evgeniy", "Krid",
-                1, "developer", Employee.Gender.MALE, LocalDate.of(1989, 05, 14));
+                1, "developer", Employee.Gender.MALE, LocalDate.of(1989, 5, 14));
         employeeNotValidAge = new Employee(2L, "Alex", "Safronov",
                 1, "developer", Employee.Gender.MALE, LocalDate.of(2011, 12, 12));
         employeeWithNotValidName = new Employee(3L, "A", "S",
-                1, "engineer", Employee.Gender.FEMALE, LocalDate.of(2002, 05, 03));
+                1, "engineer", Employee.Gender.FEMALE, LocalDate.of(2002, 5, 3));
     }
 
     @Test

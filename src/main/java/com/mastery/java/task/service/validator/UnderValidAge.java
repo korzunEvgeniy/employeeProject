@@ -5,13 +5,13 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = Under18YearsOldValidator.class)
 @Documented
 public @interface UnderValidAge {
 
-    String message() default "{Under18YearsOldValidator.message}";
+    String message() default "Employee must be over 18 years old";
 
     Class<?>[] groups() default {};
 

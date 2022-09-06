@@ -2,10 +2,11 @@ package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.service.EmployeeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
-@Api(tags = "Controller for Employees")
+@Tag(name = "Controller for Employees")
 public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
@@ -28,30 +29,36 @@ public class EmployeeController {
         this.employeeServiceImpl = service;
     }
 
-    @ApiOperation(value = "Get all employees", notes = "Returns list of employees from DB")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 404, message = "Not found - employees are not found")
-    })
+    @Operation(summary = "Get all employees", description = "Returns list of employees from DB",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Employee.class))),
+                    @ApiResponse(responseCode = "404", description = "Not found - employees are not found")
+            })
     @GetMapping
     public List<Employee> getAllEmployees() {
         logger.info("Get-request to receive all employees");
         return employeeServiceImpl.getAll();
     }
 
-    @ApiOperation(value = "Get employee by id", notes = "Returns employee as per id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 404, message = "Not found - employee is not found")
-    })
+    @Operation(summary = "Get employee by id", description = "Returns employee as per id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Employee.class))),
+                    @ApiResponse(responseCode = "404", description = "Not found - employee is not found")
+            })
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
         logger.info("Get-request to receive employee with id {}", id);
         return employeeServiceImpl.get(id);
     }
 
-    @ApiOperation(value = "Create new employee", notes = "Save new employee in DB")
-    @ApiResponses(value = @ApiResponse(code = 201, message = "Successfully created"))
+    @Operation(summary = "Create new employee", description = "Save new employee in DB",
+            responses = @ApiResponse(responseCode = "201", description = "Successfully created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Employee.class))))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@Valid @RequestBody Employee newEmployee) {
@@ -59,19 +66,21 @@ public class EmployeeController {
         return employeeServiceImpl.create(newEmployee);
     }
 
-    @ApiOperation(value = "Update employee by id", notes = "Updating existed employee as per id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated"),
-            @ApiResponse(code = 404, message = "Not found - employee is not found")
-    })
+    @Operation(summary = "Update employee by id", description = "Updating existed employee as per id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully updated",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Employee.class))),
+                    @ApiResponse(responseCode = "404", description = "Not found - employee is not found")
+            })
     @PutMapping
     public Employee updateEmployee(@Valid @RequestBody Employee updateEmployee) {
         logger.info("Put-request to updating {}", updateEmployee);
         return employeeServiceImpl.update(updateEmployee);
     }
 
-    @ApiOperation(value = "Delete employee by id", notes = "Delete record from DB")
-    @ApiResponses(value = @ApiResponse(code = 204, message = "Successfully deleted"))
+    @Operation(summary = "Delete employee by id", description = "Delete record from DB",
+            responses = @ApiResponse(responseCode = "204", description = "Successfully deleted"))
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Long id) {

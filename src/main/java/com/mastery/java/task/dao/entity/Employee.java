@@ -3,7 +3,7 @@ package com.mastery.java.task.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mastery.java.task.service.validator.UnderValidAge;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,38 +19,38 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
-    @ApiModelProperty(notes = "Auto-generated identifier for employee")
+    @Schema(description = "Auto-generated identifier for employee")
     private Long id;
 
     @Column(name = "first_name")
-    @ApiModelProperty(notes = "First name", example = "Ivan", required = true)
+    @Schema(description = "First name", example = "Ivan", required = true)
     @Size(min = 2, max = 20, message = "Name could be between 2 and 20 characters")
     private String firstName;
 
     @Column(name = "last_name")
-    @ApiModelProperty(notes = "Second name", example = "Ivanov", required = true)
+    @Schema(description = "Second name", example = "Ivanov", required = true)
     @NotBlank(message = "Second name cannot be empty")
     @Size(min = 2, max = 20)
     private String lastName;
 
     @Column(name = "department_id")
-    @ApiModelProperty(notes = "ID of department", example = "3", required = true)
+    @Schema(description = "ID of department", example = "3", required = true)
     @NotNull(message = "Department cannot be null")
     private int departmentId;
 
     @Column(name = "job_title")
-    @ApiModelProperty(notes = "Type of profession", example = "Engineer", required = true)
+    @Schema(description = "Type of profession", example = "Engineer", required = true)
     @NotBlank(message = "Professional cannot be empty")
     @Size(min = 2, max = 20)
     private String jobTitle;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "gender")
-    @ApiModelProperty(notes = "Type of gender", example = "Female", required = true)
+    @Schema(description = "Type of gender", example = "Female", required = true)
     private Employee.Gender gender;
 
     @Column(name = "date_of_birth")
-    @ApiModelProperty(notes = "Date of birth", example = "yyyy-mm-dd", required = true)
+    @Schema(description = "Date of birth", example = "yyyy-mm-dd", required = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @UnderValidAge
     private LocalDate dateOfBirth;

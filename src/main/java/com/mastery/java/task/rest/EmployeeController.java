@@ -1,6 +1,7 @@
 package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dao.entity.Employee;
+import com.mastery.java.task.mqactive.JmsProducer;
 import com.mastery.java.task.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,10 +24,12 @@ public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
     private final EmployeeService employeeServiceImpl;
+    private final JmsProducer jmsProducer;
 
     @Autowired
-    public EmployeeController(EmployeeService service) {
+    public EmployeeController(EmployeeService service, JmsProducer jmsProducer) {
         this.employeeServiceImpl = service;
+        this.jmsProducer = jmsProducer;
     }
 
     @Operation(summary = "Get all employees", description = "Returns list of employees from DB",
@@ -52,7 +55,9 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
         logger.info("Get-request to receive employee with id {}", id);
-        return employeeServiceImpl.get(id);
+        Employee employee = employeeServiceImpl.get(id);
+        jmsProducer.sendToQueue(employee);
+        return employee;
     }
 
     @Operation(summary = "Create new employee", description = "Save new employee in DB",
@@ -63,7 +68,9 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@Valid @RequestBody Employee newEmployee) {
         logger.info("Post-request to creating new entity: " + newEmployee);
-        return employeeServiceImpl.create(newEmployee);
+        Employee employee = employeeServiceImpl.create(newEmployee);
+        jmsProducer.sendToQueue(employee);
+        return employee;
     }
 
     @Operation(summary = "Update employee by id", description = "Updating existed employee as per id",

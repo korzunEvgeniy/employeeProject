@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="60 seconds" debug="false">
+<configuration scan="true" scanPeriod="15 seconds" debug="false">
 
     <property name="log.pattern"
               value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{20} - %msg%n"/>
@@ -29,12 +29,12 @@
         </encoder>
     </appender>
 
-    <logger name="com.mastery.java.task" level="warm" additivity="true">
+    <logger name="com.mastery.java.task" level="warn" additivity="true">
         <appender-ref ref="fileErrorAppender"/>
+        <appender-ref ref="fileInfoAppender"/>
     </logger>
 
     <root level="info">
         <appender-ref ref="consoleAppender"/>
-        <appender-ref ref="fileInfoAppender"/>
     </root>
 </configuration>

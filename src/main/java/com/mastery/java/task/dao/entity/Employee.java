@@ -1,7 +1,15 @@
 package com.mastery.java.task.dao.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mastery.java.task.service.validator.UnderValidAge;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -11,26 +19,41 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
+    @Schema(description = "Auto-generated identifier for employee")
     private Long id;
 
     @Column(name = "first_name")
+    @Schema(description = "First name", example = "Ivan", required = true)
+    @Size(min = 2, max = 20, message = "Name could be between 2 and 20 characters")
     private String firstName;
 
     @Column(name = "last_name")
+    @Schema(description = "Second name", example = "Ivanov", required = true)
+    @NotBlank(message = "Second name cannot be empty")
+    @Size(min = 2, max = 20)
     private String lastName;
 
     @Column(name = "department_id")
+    @Schema(description = "ID of department", example = "3", required = true)
+    @NotNull(message = "Department cannot be null")
     private int departmentId;
 
     @Column(name = "job_title")
+    @Schema(description = "Type of profession", example = "Engineer", required = true)
+    @NotBlank(message = "Professional cannot be empty")
+    @Size(min = 2, max = 20)
     private String jobTitle;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "gender")
+    @Schema(description = "Type of gender", example = "Female", required = true)
     private Employee.Gender gender;
 
     @Column(name = "date_of_birth")
-    private String dateOfBirth;
+    @Schema(description = "Date of birth", example = "yyyy-mm-dd", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @UnderValidAge
+    private LocalDate dateOfBirth;
 
     public enum Gender {
         MALE,
@@ -39,7 +62,7 @@ public class Employee {
 
     public Employee(Long id, String firstName, String lastName,
                     int departmentId, String jobTitle,
-                    Employee.Gender gender, String dateOfBirth) {
+                    Employee.Gender gender, LocalDate dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -76,7 +99,7 @@ public class Employee {
         return gender;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -104,7 +127,7 @@ public class Employee {
         this.gender = gender;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

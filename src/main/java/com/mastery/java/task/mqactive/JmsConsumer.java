@@ -15,7 +15,7 @@ public class JmsConsumer {
     @Value("${spring.activemq.queue}")
     String queue;
 
-    @JmsListener(destination = "myQueue")
+    @JmsListener(destination = "${spring.activemq.queue}")
     @SendTo("myQueue2")
     public String receiveAndForwardMessageFromQueue(final Message jsonMessage) {
         String messageData = null;

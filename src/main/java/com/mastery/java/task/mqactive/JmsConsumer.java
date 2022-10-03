@@ -1,33 +1,42 @@
 package com.mastery.java.task.mqactive;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mastery.java.task.dao.entity.Employee;
+import com.mastery.java.task.service.impl.EmployeeServiceImpl;
+import com.mastery.java.task.util.LocalDateDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.TextMessage;
+import java.time.LocalDate;
 
 @Component
 public class JmsConsumer {
 
-    @Value("${spring.activemq.queue}")
-    String queue;
+    private static final Logger logger = LoggerFactory.getLogger(JmsConsumer.class);
 
-    @JmsListener(destination = "${spring.activemq.queue}")
-    @SendTo("myQueue2")
-    public String receiveAndForwardMessageFromQueue(final Message jsonMessage) {
-        String messageData = null;
-        System.out.println("Received message " + jsonMessage);
-        if (jsonMessage instanceof TextMessage textMessage) {
-            try {
-                messageData = textMessage.getText();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-            System.out.println("messageData: " + messageData);
-        }
-        return messageData;
+    private final EmployeeServiceImpl employeeService;
+
+    @Autowired
+    public JmsConsumer(EmployeeServiceImpl employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @JmsListener(destination = "newEmployeesQueue")
+    public Employee receive(String message) {
+
+        logger.debug("received: " + message);
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+        Employee employee = gson.fromJson(message, Employee.class);
+
+        logger.debug(employee.toString());
+
+        return employeeService.create(employee);
     }
 }

@@ -3,6 +3,7 @@ package com.mastery.java.task.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.jms.JmsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +18,16 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(EmployeeNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorMessage employeeNotFoundException(EmployeeNotFoundException ex, WebRequest request) {
+        logger.error(ex.toString());
+        return new ErrorMessage(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+    }
+
+    @ExceptionHandler(JmsException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorMessage jmsException(JmsException ex, WebRequest request) {
         logger.error(ex.toString());
         return new ErrorMessage(
                 new Date(),

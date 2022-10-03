@@ -23,6 +23,7 @@ import java.util.List;
 public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+
     private final EmployeeService employeeServiceImpl;
     private final JmsProducer jmsProducer;
 
@@ -68,9 +69,8 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createNewEmployee(@Valid @RequestBody Employee newEmployee) {
         logger.info("Post-request to creating new entity: " + newEmployee);
-        Employee employee = employeeServiceImpl.create(newEmployee);
-        jmsProducer.sendToQueue(employee);
-        return employee;
+        jmsProducer.sendToQueue(newEmployee);
+        return employeeServiceImpl.get(newEmployee.getId());
     }
 
     @Operation(summary = "Update employee by id", description = "Updating existed employee as per id",

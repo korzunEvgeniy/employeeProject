@@ -26,17 +26,25 @@ public class JmsConsumer {
     }
 
     @JmsListener(destination = "newEmployeesQueue")
-    public Employee receive(String message) {
-
+    public void receiveNewEmployee(String message) {
         logger.debug("received: " + message);
+        Employee employee = parsingMessageToEmployee(message);
+        logger.debug(employee.toString());
+        employeeService.create(employee);
+    }
 
+    @JmsListener(destination = "updateEmployeesQueue")
+    public void receiveUpdateEmployee(String message) {
+        logger.debug("received: " + message);
+        Employee employee = parsingMessageToEmployee(message);
+        logger.debug(employee.toString());
+        employeeService.update(employee);
+    }
+
+    private Employee parsingMessageToEmployee(String message) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
         Gson gson = gsonBuilder.setPrettyPrinting().create();
-        Employee employee = gson.fromJson(message, Employee.class);
-
-        logger.debug(employee.toString());
-
-        return employeeService.create(employee);
+        return gson.fromJson(message, Employee.class);
     }
 }

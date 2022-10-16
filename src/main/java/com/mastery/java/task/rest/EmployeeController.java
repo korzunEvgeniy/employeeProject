@@ -56,9 +56,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
         logger.info("Get-request to receive employee with id {}", id);
-        Employee employee = employeeServiceImpl.get(id);
-        jmsProducer.sendToQueue(employee);
-        return employee;
+        return employeeServiceImpl.get(id);
     }
 
     @Operation(summary = "Create new employee", description = "Save new employee in DB",
@@ -67,10 +65,9 @@ public class EmployeeController {
                             schema = @Schema(implementation = Employee.class))))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createNewEmployee(@Valid @RequestBody Employee newEmployee) {
+    public void createNewEmployee(@Valid @RequestBody Employee newEmployee) {
         logger.info("Post-request to creating new entity: " + newEmployee);
-        jmsProducer.sendToQueue(newEmployee);
-        return employeeServiceImpl.get(newEmployee.getId());
+        jmsProducer.sendNewEmployeeToQueue(newEmployee);
     }
 
     @Operation(summary = "Update employee by id", description = "Updating existed employee as per id",
@@ -81,9 +78,9 @@ public class EmployeeController {
                     @ApiResponse(responseCode = "404", description = "Not found - employee is not found")
             })
     @PutMapping
-    public Employee updateEmployee(@Valid @RequestBody Employee updateEmployee) {
+    public void updateEmployee(@Valid @RequestBody Employee updateEmployee) {
         logger.info("Put-request to updating {}", updateEmployee);
-        return employeeServiceImpl.update(updateEmployee);
+        jmsProducer.sendUpdateEmployeeToQueue(updateEmployee);
     }
 
     @Operation(summary = "Delete employee by id", description = "Delete record from DB",

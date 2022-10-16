@@ -20,7 +20,9 @@ public class JmsProducer {
     private static final Logger logger = LoggerFactory.getLogger(JmsProducer.class);
 
     @Value("newEmployeesQueue")
-    private String queue;
+    private String newEmployeesQueue;
+    @Value("updateEmployeesQueue")
+    private String updateEmployeesQueue;
     private final JmsTemplate jmsTemplate;
 
     @Autowired
@@ -28,17 +30,24 @@ public class JmsProducer {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void sendToQueue(Employee employee) throws JmsException {
-
+    public void sendNewEmployeeToQueue(Employee employee) throws JmsException {
         logger.debug(employee.toString());
+        String json = parsingEmployeeToMessage(employee);
+        logger.debug(json);
+        jmsTemplate.convertAndSend(newEmployeesQueue, json);
+    }
 
+    public void sendUpdateEmployeeToQueue(Employee employee) throws JmsException {
+        logger.debug(employee.toString());
+        String json = parsingEmployeeToMessage(employee);
+        logger.debug(json);
+        jmsTemplate.convertAndSend(updateEmployeesQueue, json);
+    }
+
+    private String parsingEmployeeToMessage(Employee employee) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
         Gson gson = gsonBuilder.create();
-        String json = gson.toJson(employee);
-
-        logger.debug(json);
-
-        jmsTemplate.convertAndSend(queue, json);
+        return gson.toJson(employee);
     }
 }

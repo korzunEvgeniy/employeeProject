@@ -7,7 +7,6 @@ import com.mastery.java.task.util.LocalDateSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -18,11 +17,6 @@ import java.time.LocalDate;
 public class JmsProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(JmsProducer.class);
-
-    @Value("newEmployeesQueue")
-    private String newEmployeesQueue;
-    @Value("updateEmployeesQueue")
-    private String updateEmployeesQueue;
     private final JmsTemplate jmsTemplate;
 
     @Autowired
@@ -31,16 +25,16 @@ public class JmsProducer {
     }
 
     public void sendNewEmployeeToQueue(Employee employee) throws JmsException {
-        logger.debug(employee.toString());
+        logger.debug("message with new employee sent");
         String json = parsingEmployeeToMessage(employee);
-        logger.debug(json);
+        String newEmployeesQueue = "newEmployeesQueue";
         jmsTemplate.convertAndSend(newEmployeesQueue, json);
     }
 
     public void sendUpdateEmployeeToQueue(Employee employee) throws JmsException {
-        logger.debug(employee.toString());
+        logger.debug("message with updated employee sent");
         String json = parsingEmployeeToMessage(employee);
-        logger.debug(json);
+        String updateEmployeesQueue = "updateEmployeesQueue";
         jmsTemplate.convertAndSend(updateEmployeesQueue, json);
     }
 

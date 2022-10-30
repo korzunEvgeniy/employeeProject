@@ -2,7 +2,6 @@ package com.mastery.java.task.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mastery.java.task.dao.entity.Employee;
-import com.mastery.java.task.mqactive.JmsProducer;
 import com.mastery.java.task.service.impl.EmployeeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +35,6 @@ public class EmployeeControllerTest {
 
     @MockBean
     private EmployeeServiceImpl employeeService;
-
-    @MockBean
-    private JmsProducer jmsProducer;
 
     @Autowired
     EmployeeController employeeController;

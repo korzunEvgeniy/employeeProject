@@ -1,19 +1,19 @@
 package com.mastery.java.task.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ErrorMessage {
-    private final Date timestamp;
+    private final LocalDateTime timestamp;
     private final String message;
     private final String description;
 
-    public ErrorMessage(Date timestamp, String message, String description) {
+    public ErrorMessage(LocalDateTime timestamp, String message, String description) {
         this.timestamp = timestamp;
         this.message = message;
         this.description = description;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 

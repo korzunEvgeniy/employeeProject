@@ -39,9 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee create(Employee newEmployee) {
         logger.trace("Creating new employee in DB");
-        employeeRepository.save(newEmployee);
-        return employeeRepository.findById(newEmployee.getId())
-                .orElseThrow(() -> new EmployeeNotFoundException(newEmployee.getId()));
+        return employeeRepository.save(newEmployee);
     }
 
     @Override

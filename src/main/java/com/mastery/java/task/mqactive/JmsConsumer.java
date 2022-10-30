@@ -27,17 +27,15 @@ public class JmsConsumer {
 
     @JmsListener(destination = "newEmployeesQueue")
     public void receiveNewEmployee(String message) {
-        logger.debug("received: " + message);
+        logger.debug("message with new employee received");
         Employee employee = parsingMessageToEmployee(message);
-        logger.debug(employee.toString());
         employeeService.create(employee);
     }
 
     @JmsListener(destination = "updateEmployeesQueue")
     public void receiveUpdateEmployee(String message) {
-        logger.debug("received: " + message);
+        logger.debug("message with updated employee received");
         Employee employee = parsingMessageToEmployee(message);
-        logger.debug(employee.toString());
         employeeService.update(employee);
     }
 

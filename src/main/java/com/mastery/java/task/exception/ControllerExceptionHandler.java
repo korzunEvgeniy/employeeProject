@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -20,7 +20,7 @@ public class ControllerExceptionHandler {
     public ErrorMessage employeeNotFoundException(EmployeeNotFoundException ex, WebRequest request) {
         logger.error(ex.toString());
         return new ErrorMessage(
-                new Date(),
+                LocalDateTime.now(),
                 ex.getMessage(),
                 request.getDescription(false));
     }
@@ -30,7 +30,7 @@ public class ControllerExceptionHandler {
     public ErrorMessage jmsException(JmsException ex, WebRequest request) {
         logger.error(ex.toString());
         return new ErrorMessage(
-                new Date(),
+                LocalDateTime.now(),
                 ex.getMessage(),
                 request.getDescription(false));
     }
@@ -40,7 +40,7 @@ public class ControllerExceptionHandler {
     public ErrorMessage globalExceptionHandler(Exception ex, WebRequest request) {
         logger.error(ex.toString());
         return new ErrorMessage(
-                new Date(),
+                LocalDateTime.now(),
                 ex.getMessage(),
                 request.getDescription(false));
     }

@@ -1,17 +1,14 @@
 package com.mastery.java.task.mqactive;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mastery.java.task.dao.entity.Employee;
 import com.mastery.java.task.service.impl.EmployeeServiceImpl;
-import com.mastery.java.task.util.LocalDateDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 public class JmsConsumer {
@@ -40,9 +37,11 @@ public class JmsConsumer {
     }
 
     private Employee parsingMessageToEmployee(String message) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-        Gson gson = gsonBuilder.setPrettyPrinting().create();
-        return gson.fromJson(message, Employee.class);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(message, Employee.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

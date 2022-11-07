@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  simplewebapp:
+    depends_on:
+      - postgres
+    build: D:\Java\projects\employeeProject
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"

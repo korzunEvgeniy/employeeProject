@@ -9,16 +9,20 @@ services:
       - "8082:8082"
     depends_on:
       - postgres
-    container_name: webapp
+      - activemq
+    container_name: simplewebapp
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/employeedb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - SPRING_ACTIVEMQ_BROKER-URL=tcp://activemq:61616
+      - SPRING_ACTIVEMQ_USER=admin
+      - SPRING_ACTIVEMQ_PASSWORD=admin
     restart: always
   postgres:
     image: postgres
-    container_name: my-db
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
@@ -28,3 +32,10 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - ./data:/var/lib/postgresql/data
+  activemq:
+    image: rmohr/activemq
+    container_name: activemq
+    ports:
+      - "8161:8161"
+    depends_on:
+      - postgres
